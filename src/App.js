@@ -8,36 +8,30 @@ class App extends Component {
   state = {
     images: [],
     page: 1,
-    term: ""
+    term: null
   };
 
   onSearchSubmit = async term => {
-    this.setState({ term: term });
+    const { page } = this.state;
     const response = await unsplash.get("/search/photos", {
-      params: { query: term, per_page: 5, page: this.state.page }
+      params: { query: term, per_page: 7, page }
     });
-    this.setState({ images: response.data.results });
+    this.setState({ images: response.data.results, term });
   };
 
-  fetchImages = async direction => {
-    if (direction === "back") {
-      if (this.state.page === 1) {
-        return console.log("At first page");
-      } else {
-        this.setState({ page: this.state.page - 1 });
-        const response = await unsplash.get("/search/photos", {
-          params: { query: this.state.term, per_page: 5, page: this.state.page }
-        });
-        this.setState({ images: response.data.results });
-      }
+  fetchImages = direction => {
+    if (direction === "back" && this.state.page > 1) {
+      this.setState({ page: this.state.page - 1 });
     }
 
     if (direction === "next") {
       this.setState({ page: this.state.page + 1 });
-      const response = await unsplash.get("/search/photos", {
-        params: { query: this.state.term, per_page: 5, page: this.state.page }
-      });
-      this.setState({ images: response.data.results });
+    }
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.page !== this.state.page) {
+      this.onSearchSubmit(this.state.term);
     }
   };
 
@@ -46,7 +40,7 @@ class App extends Component {
       <div className="container text-center mt-4">
         <h4>React Image Search</h4>
         <SearchBar onSubmit={this.onSearchSubmit} />
-        <ImageCarousel images={this.state.images} />
+
         <div className="btn-group">
           <button
             onClick={() => this.fetchImages("back")}
@@ -54,6 +48,7 @@ class App extends Component {
           >
             Back
           </button>
+
           <button
             onClick={() => this.fetchImages("next")}
             className="btn btn-primary btn-sm"
@@ -61,6 +56,8 @@ class App extends Component {
             Next
           </button>
         </div>
+
+        <ImageCarousel images={this.state.images} />
       </div>
     );
   }
