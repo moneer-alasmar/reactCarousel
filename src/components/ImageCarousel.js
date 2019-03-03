@@ -4,27 +4,16 @@ import { Carousel } from "react-responsive-carousel";
 import ImageItem from "./ImageItem";
 
 const ImageCarousel = props => {
+  const images = props.images.map(image => {
+    return (
+      <div className="fluid">
+        <img src={image.urls.regular} />
+        <p className="legend" />
+      </div>
+    );
+  });
   console.log(props);
-  return (
-    <Carousel>
-      <div>
-        <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
-        <p className="legend">1</p>
-      </div>
-      <div>
-        <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
-        <p className="legend">1</p>
-      </div>
-      <div>
-        <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
-        <p className="legend">1</p>
-      </div>
-      <div>
-        <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
-        <p className="legend">1</p>
-      </div>
-    </Carousel>
-  );
+  return <Carousel>{images}</Carousel>;
 };
 
 export default ImageCarousel;
