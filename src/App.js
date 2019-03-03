@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar";
 import unsplash from "./api/unsplash";
+import ImageCarousel from "./components/ImageCarousel";
 
 class App extends Component {
   state = {
@@ -41,11 +42,11 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div className="container text-center mt-4">
         <h4>React Image Search</h4>
         <SearchBar onSubmit={this.onSearchSubmit} />
+        <ImageCarousel images={this.state.images} />
         <div className="btn-group">
           <button
             onClick={() => this.fetchImages("back")}
