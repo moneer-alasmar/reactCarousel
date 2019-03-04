@@ -7,7 +7,6 @@ const ImageCarousel = props => {
     return (
       <div key={image.id}>
         <img src={image.urls.regular} alt=".." />
-        <p className="legend" />
       </div>
     );
   });

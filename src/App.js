@@ -3,6 +3,8 @@ import "./App.css";
 import SearchBar from "./components/SearchBar";
 import unsplash from "./api/unsplash";
 import ImageCarousel from "./components/ImageCarousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
 
 class App extends Component {
   state = {
@@ -36,6 +38,7 @@ class App extends Component {
   };
 
   render() {
+    const { images } = this.state;
     return (
       <div className="container text-center mt-4">
         <h4>React Image Search</h4>
@@ -57,7 +60,15 @@ class App extends Component {
           </button>
         </div>
 
-        <ImageCarousel images={this.state.images} />
+        <Carousel infiniteLoop={true} showThumbs={false}>
+          {images.map(image => {
+            return (
+              <div key={image.id}>
+                <img src={image.urls.regular} alt=".." />
+              </div>
+            );
+          })}
+        </Carousel>
       </div>
     );
   }
